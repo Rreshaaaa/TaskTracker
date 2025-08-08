@@ -21,4 +21,9 @@ const PORT = process.env.PORT || 5000;
 const staticDir = path.resolve(__dirname, '../client/dist');
 app.use(express.static(staticDir));
 
+// SPA fallback: send index.html for non-API routes (Express 5 compatible)
+app.get(/^/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(staticDir, 'index.html'));
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
